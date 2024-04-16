@@ -1,3 +1,5 @@
+import secrets
+
 import customtkinter as ctk
 import random
 import string
@@ -20,23 +22,20 @@ class MainWindow:
     def generatePassword(self):
         self.textBox.delete("0.0", "end")
         if self.val.get() == 1:
-            Up = random.choices(string.ascii_uppercase, k=6)
+            Up = secrets.choice(string.ascii_uppercase) * 6
         else:
-            Up = []
+            Up = ""
         if self.special.get() == 1:
-            Sp = random.choices("~`!@#$%^&*()_-=}[]:;'\|<>?,./", k=4)
+            Sp = ''.join(secrets.choice("~`!@#$%^&*()_-=}[]:;'\\|<>?,./") for _ in range(4))
         else:
-            Sp = []
+            Sp = ""
         if self.num.get() == 1:
-            Number = random.choices(string.digits, k=5)
+            Number = ''.join(secrets.choice(string.digits) for _ in range(5))
         else:
-            Number = []
-        randomGen = random.sample(
-            Up + Up + Sp + Number + random.choices(string.ascii_lowercase, k=24),
-            k=int(self.length.get()))
-        randomGen =''.join(randomGen)
+            Number = ""
+        randomGen = ''.join(
+            secrets.choice(Up + Sp + Number + string.ascii_lowercase) for _ in range(int(self.length.get())))
         self.textBox.insert("0.0", randomGen)
-        
 
     def adds(self):
         self.frame = ctk.CTkFrame(self.main)
